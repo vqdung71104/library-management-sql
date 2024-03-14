@@ -1,0 +1,71 @@
+-- Mã lệnh CREATE TABLE
+CREATE TABLE books (
+  id BIGSERIAL PRIMARY KEY,
+  title VARCHAR(100) NOT NULL,
+  author VARCHAR(100) NOT NULL,
+  category VARCHAR(100) NOT NULL,
+  quantity INT NOT NULL
+);
+
+CREATE TABLE borrowed_books (
+  id BIGSERIAL PRIMARY KEY,
+  book_id BIGINT NOT NULL,
+  borrower_name VARCHAR(100) NOT NULL,
+  borrow_date DATE NOT NULL,
+  return_date DATE NULL,
+  FOREIGN KEY (book_id) REFERENCES books(id)
+);
+
+
+-- Mã lệnh INSERT
+INSERT INTO books (title, author, category, quantity)
+VALUES ('Book 1', 'Author 1', 'Category 1', 10);
+
+INSERT INTO books (title, author, category, quantity)
+VALUES ('Book 2', 'Author 2', 'Category 2', 5);
+
+INSERT INTO books (title, author, category, quantity)
+VALUES ('Book 3', 'Author 3', 'Category 1', 8);
+
+INSERT INTO books (title, author, category, quantity)
+VALUES ('Book 4', 'Author 2', 'Category 3', 3);
+
+INSERT INTO books (title, author, category, quantity)
+VALUES ('Book 5', 'Author 1', 'Category 2', 12);
+
+INSERT INTO books (title, author, category, quantity)
+VALUES ('Book 6', 'Author 3', 'Category 3', 6);
+
+
+INSERT INTO borrowed_books (book_id, borrower_name, borrow_date, return_date)
+VALUES (1, 'Borrower 1', '2024-03-01', '2024-03-08');
+
+INSERT INTO borrowed_books (book_id, borrower_name, borrow_date, return_date)
+VALUES (2, 'Borrower 2', '2024-03-02', '2024-03-09');
+
+INSERT INTO borrowed_books (book_id, borrower_name, borrow_date, return_date)
+VALUES (3, 'Borrower 3', '2024-03-03', '2024-03-10');
+
+INSERT INTO borrowed_books (book_id, borrower_name, borrow_date, return_date)
+VALUES (4, 'Borrower 4', '2024-03-04', '2024-03-11');
+
+INSERT INTO borrowed_books (book_id, borrower_name, borrow_date, return_date)
+VALUES (5, 'Borrower 5', '2024-03-05', '2024-03-12');
+
+UPDATE borrowed_books
+SET return_date = CURRENT_DATE
+WHERE id = 1;
+
+
+-- Mã lệnh SELECT
+SELECT * FROM books;
+
+SELECT * FROM books 
+WHERE category='Category 1';
+
+SELECT books.title, books.author, borrowed_books.borrower_name, borrowed_books.borrow_date, borrowed_books.return_date
+FROM borrowed_books
+INNER JOIN books ON borrowed_books.book_id = books.id;
+SELECT books.title, books.author, borrowed_books.borrower_name, borrowed_books.borrow_date, borrowed_books.return_date
+FROM books
+LEFT JOIN borrowed_books ON books.id = borrowed_books.book_id;
